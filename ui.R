@@ -2,6 +2,7 @@ library(shiny)
 
 fluidPage(
   column(width = 2,
+         br(),
          sliderInput("p",
                      "p: Erfolgswahrscheinlichkeit",
                      value = 0.7,

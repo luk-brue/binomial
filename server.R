@@ -24,13 +24,17 @@ function(input, output, session) {
                             main = "Wahrscheinlichkeitsfunktion",
                             ylab = "f(x)",
                             xlab = "x: Erfolge")
+    points(x = seq_len(input$n),
+         y = density_binom(),
+         pch = 19)
     segments(y1 = density_binom()[input$x],
              y0 = 0,
              x0 = input$x,
              col = "red")
     points(y = density_binom()[input$x],
            x = input$x,
-           col = "red")
+           col = "red",
+           pch = 19)
   }) |> bindEvent(input$go)
 
   cumdens_binom <- reactive({
@@ -47,14 +51,20 @@ function(input, output, session) {
 
   output$verteilungsfunktion <- renderPlot({
 
-    cumdens_binom() |>
-      plot(type = "s",
+      stepfun(x = seq_len(input$n),
+              y = c(0, cumdens_binom()),
+              right = F) |>
+      plot.stepfun(verticals = F,
         main = "Verteilungsfunktion",
         ylab = "F(x)",
-        xlab = "x: Erfolge")
+        xlab = "x: Erfolge",
+        pch = 19,
+        xaxt = "n")
+    axis(side = 1, at = seq(2, 14, by = 2))
     points(x = input$x,
            y = cumdens_binom()[input$x],
-           col = "red")
+           col = "red",
+           pch = 19)
   }) |> bindEvent(input$go)
 
   output$f <- renderText({
