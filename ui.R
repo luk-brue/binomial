@@ -4,7 +4,7 @@ fluidPage(
   column(width = 2,
          br(),
          sliderInput("p",
-                     "p: Erfolgswahrscheinlichkeit",
+                     "Erfolgswahrscheinlichkeit",
                      value = 0.7,
                      min = 0,
                      max = 1,
@@ -15,16 +15,22 @@ fluidPage(
                      min = 1,
                      max = 100,
                      step = 1),
-         uiOutput("erfolge"),
-         actionButton("go",
-                      "Go!",
-                      icon = icon("microchip"))
+         sliderInput("x",
+                     "Anzahl an Erfolgen",
+                     value = 5,
+                     min = 1,
+                     max = 14,
+                     step = 1),
+         # actionButton("go",
+         #              "Go!",
+         #              icon = icon("microchip")),
+         br(),
+         textOutput("dist")
   ),
   column(width = 5,
-         plotOutput("wahrscheinlichkeitsfunktion"),
-         textOutput("f")
-         ),
+         br(),
+         plotOutput("wahrscheinlichkeitsfunktion")),
   column(width = 5,
-         plotOutput("verteilungsfunktion"),
-         textOutput("fcum"))
+         br(),
+         plotOutput("verteilungsfunktion"))
 )
