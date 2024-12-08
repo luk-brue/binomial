@@ -10,7 +10,7 @@ function(input, output, session) {
                             max = input$n,
                             value = input$x
                             )
-          }) |> bindEvent(input$n < input$x)
+          }) |> bindEvent(input$n)
 
 
   # this sequence is needed a lot
