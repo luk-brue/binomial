@@ -7,15 +7,15 @@ function(input, output, session) {
   # solution: dynamic UI
   observe({
     updateSliderInput(inputId = "x",
-                            max = input$n,
-                            value = input$x
-                            )
-          }) |> bindEvent(input$n)
+                      max = input$n,
+                      value = input$x
+    )
+  }) |> bindEvent(input$n)
 
 
   # this sequence is needed a lot
   x_seq <- reactive({
-    seq_len(input$n)
+    seq(from = 0, to = input$n, by = 1)
   })
 
   # distribution function
@@ -34,39 +34,39 @@ function(input, output, session) {
 
   # current density based on x
   current_dens <- reactive({
-    density_binom()[input$x]
+    density_binom()[input$x + 1]
   })
 
   # current cumulative density based on x
   current_cumdens <- reactive({
-    cumdens_binom()[input$x]
+    cumdens_binom()[input$x + 1]
   })
 
   # colors
   # dist. funct
   dens_color <- reactive({
     forcats::fct(ifelse(x_seq() == input$x,
-           yes = "red",
-           no = "black"),
-           levels = c("black", "red"))
+                        yes = "red",
+                        no = "black"),
+                 levels = c("black", "red"))
   })
 
   # cumul. dist. funct.
   cumul_color <- reactive({
     forcats::fct(ifelse(x_seq() <= input$x,
-           yes = "red",
-           no = "black"),
-           levels = c("red", "black"))
+                        yes = "red",
+                        no = "black"),
+                 levels = c("red", "black"))
   })
 
 
   # data frame for ggplot
   plot_df <- reactive({
     tibble::tibble(x = x_seq(),
-               dens = density_binom(),
-               cumdens = cumdens_binom(),
-               dens_color = dens_color(),
-               cumul_color = cumul_color())
+                   dens = density_binom(),
+                   cumdens = cumdens_binom(),
+                   dens_color = dens_color(),
+                   cumul_color = cumul_color())
   })
 
   base_dens_plot <- reactive({
@@ -101,7 +101,7 @@ function(input, output, session) {
   })
 
   output$wahrscheinlichkeitsfunktion <- renderPlot({
-      base_dens_plot() +
+    base_dens_plot() +
       geom_segment(aes(x = x,
                        yend = dens,
                        y = 0,
@@ -145,6 +145,11 @@ function(input, output, session) {
 
   output$dist <- renderText({
     paste0("X ~ B(N = ", input$n, ", p = ", input$p, ")")
+  })
+
+  output$github <- renderUI({
+    tagList("Finde den Quellcode dieser R-basierten Anwendung auf ",
+            a("Github", href="https://github.com/luk-brue/binomial"), br(), "--- LB 24")
   })
 
 }
