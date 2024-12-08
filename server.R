@@ -8,9 +8,7 @@ function(input, output, session) {
   observe({
     updateSliderInput(inputId = "x",
                             max = input$n,
-                            value = ifelse(input$n < isolate(input$x),
-                                           yes = input$n,
-                                           no = isolate(input$x))
+                            value = input$x
                             )
           }) |> bindEvent(input$n < input$x)
 
